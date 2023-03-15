@@ -1,19 +1,15 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
-	"os"
+	"log"
 
-	"github.com/labstack/echo/v5"
+	"github.com/pocketbase/pocketbase"
 )
 
 func main() {
-	e := echo.New()
+	pb := pocketbase.NewWithConfig(&pocketbase.Config{})
 
-	e.GET("/health", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, map[string]string{"status": "ok"})
-	})
-
-	e.Start(fmt.Sprintf("0.0.0.0:%s", os.Getenv("PORT")))
+	if err := pb.Start(); err != nil {
+		log.Fatal(err)
+	}
 }
