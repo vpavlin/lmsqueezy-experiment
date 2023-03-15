@@ -8,6 +8,8 @@ services:
     environment:
       - PORT=8080
     volumes:
-      - go-cache:/opt/app-root/src/.cache/go-build
+      - go-cache:/opt/app-root/src/.cache/go-build:z
+      - pb_data:/opt/app-root/src/pb_data:z
 volumes:
   go-cache:
+  pb_data:
