@@ -9,6 +9,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+type Payload struct {
+	Meta Metadata `json:"meta"`
+	Data Data     `json:"data"`
+}
 type CustomData struct {
 	CustomerId string `json:"customer_id"`
 }
@@ -34,7 +38,7 @@ func main() {
 	pb.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		e.Router.POST("/lms/webhook", func(c echo.Context) error {
 			event := c.Request().Header.Get("X-Event-Name")
-			var payload map[string]interface{}
+			var payload Payload
 			err := c.Bind(&payload)
 			if err != nil {
 				logrus.Errorf("Failed to bind payload: %s", err)
@@ -44,29 +48,9 @@ func main() {
 			switch event {
 			case "order_created":
 				logrus.Infof("ORDER CREATED event: ")
-				metadataI, ok := payload["meta"]
-				if !ok {
-					logrus.Errorf("Failed to find metadata in payload")
-					return nil
-				}
 
-				metadata, ok := metadataI.(Metadata)
-				if !ok {
-					logrus.Errorf("Failed to cast metadata")
-					return nil
-				}
-
-				dataI, ok := payload["data"]
-				if !ok {
-					logrus.Errorf("Failed to find data in payload")
-					return nil
-				}
-
-				data, ok := dataI.(Data)
-				if !ok {
-					logrus.Errorf("Failed to cast data")
-					return nil
-				}
+				metadata := payload.Meta
+				data := payload.Data
 
 				record, err := pb.App.Dao().FindAuthRecordByUsername("users", metadata.CustomData.CustomerId)
 				if err != nil {
