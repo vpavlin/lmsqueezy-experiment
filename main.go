@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
+	"github.com/pocketbase/pocketbase/plugins/migratecmd"
 	"github.com/sirupsen/logrus"
 )
 
@@ -43,6 +44,9 @@ type OrderCreated struct {
 
 func main() {
 	pb := pocketbase.NewWithConfig(&pocketbase.Config{})
+	migratecmd.MustRegister(pb, pb.RootCmd, &migratecmd.Options{
+		Automigrate: true, // auto creates migration files when making collection changes
+	})
 
 	pb.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		e.Router.POST("/lms/webhook", func(c echo.Context) error {
