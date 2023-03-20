@@ -1,14 +1,6 @@
-FROM registry.access.redhat.com/ubi9/go-toolset:1.18.9-14 as build
+FROM registry.access.redhat.com/ubi9/go-toolset:1.18.9-14
 
-ADD go.mod go.sum ./
-
-RUN go mod download
-
-FROM build
-
-ADD . .
-
-RUN go build -o pocketbase main.go
+ADD _build/pocketbase ./pocketbase
 
 RUN ls && pwd
 
