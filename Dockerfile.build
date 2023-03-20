@@ -1,0 +1,9 @@
+FROM registry.access.redhat.com/ubi9/go-toolset
+
+ADD go.mod go.sum ./
+
+RUN go mod download
+
+WORKDIR /opt/app-root/src/app/
+
+CMD ["make build"]
