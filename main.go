@@ -9,6 +9,8 @@ import (
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
 	"github.com/sirupsen/logrus"
+
+	_ "github.com/vpavlin/lmsqueezy-experiment/migrations"
 )
 
 type Payload struct {
