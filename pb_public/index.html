@@ -10,6 +10,7 @@
     <ul id="list">
         <li>Loading OAuth2 providers...</li>
     </ul>
+    <div id="userInfo"></div>
 
     <script src="https://cdn.jsdelivr.net/gh/pocketbase/js-sdk@master/dist/pocketbase.umd.js"></script>
     <script type="text/javascript">
@@ -37,7 +38,20 @@
             $('#list').html(listItems.length ? listItems : '<li>No OAuth2 providers.</li>');
         }
 
+        async function loggedIn() {
+            const x =await pb.collection('users').authRefresh();
+            console.log(x)
+
+            if (pb.authStore.isValid) {
+                $('#userInfo').html(pb.authStore.model.email)
+            } else {
+                $('#userInfo').html("Login first")
+            }
+
+        }
+
         loadLinks();
+        loggedIn();
     </script>
 </body>
 </html>
