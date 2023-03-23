@@ -10,6 +10,13 @@ services:
     volumes:
       - go-cache:/opt/app-root/src/.cache/go-build:z
       - pb_data:/opt/app-root/src/pb_data:z
+      - /root/lmsqueezy-experiment/pb_public:/opt/app-root/src/pb_public:z
 volumes:
   go-cache:
   pb_data:
+  pb_public:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/root/lmsqueezy-experiment/pb_public'
