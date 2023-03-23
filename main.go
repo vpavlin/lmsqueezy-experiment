@@ -3,9 +3,11 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"os"
 
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase"
+	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
 	"github.com/sirupsen/logrus"
@@ -85,6 +87,8 @@ func main() {
 			return nil
 
 		})
+
+		e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS("./pb_public"), false))
 
 		return nil
 	})
