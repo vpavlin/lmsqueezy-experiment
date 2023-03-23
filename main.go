@@ -19,6 +19,7 @@ type Payload struct {
 }
 type CustomData struct {
 	CustomerId string `json:"customer_id"`
+	OrderId    string `json:"order_id"`
 }
 type Metadata struct {
 	EventName  string     `json:"event_name"`
@@ -70,7 +71,7 @@ func main() {
 				d, _ := json.MarshalIndent(payload, "", "  ")
 				logrus.Info(string(d))
 
-				record, err := pb.App.Dao().FindAuthRecordByUsername("users", metadata.CustomData.CustomerId)
+				record, err := pb.App.Dao().FindAuthRecordByUsername("orders", metadata.CustomData.OrderId)
 				if err != nil {
 					logrus.Errorf("Failed to find user: %s", err)
 					return nil
